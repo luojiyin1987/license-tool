@@ -7,11 +7,16 @@ jobs:
     name: Lint Code Base
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 14.x, 16.x, 18.x]
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          node-version: ${{ matrix.node-version }}
 
       - name: Lint Code Base
         uses: github/super-linter/slim@v4
@@ -20,3 +25,12 @@ jobs:
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_HTML: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm test
+        env:
+          CI: true
+    
