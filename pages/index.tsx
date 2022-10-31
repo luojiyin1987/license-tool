@@ -1,12 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 
+import licenseInfo  from "./license";
+
 import styles from "../styles/Home.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { Container, Row, Col, ProgressBar } from "react-bootstrap";
 
-const now = 60;
-
+const now = 16;
+let step = 1;
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -18,9 +20,11 @@ export default function Home() {
 
       <div>
         <ProgressBar variant="success" now={40} />
-        <ProgressBar variant="info" now={20} />
-        <ProgressBar variant="warning" now={60} />
-        <ProgressBar variant="danger" now={80} />
+        <ProgressBar  id="select-step-progress" variant="info" now={now} label={`第${step}步`}/>
+        
+      </div>
+      <div>
+
       </div>
       <footer className={styles.footer}>
         <a
