@@ -1,14 +1,15 @@
 import Head from "next/head";
 import Image from "next/image";
 
-import licenseInfo  from "./license";
+import licenseInfo from "./license";
 
 import styles from "../styles/Home.module.css";
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import { Container, Row, Col, ProgressBar } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row, Col, ProgressBar, Dropdown, DropdownButton } from "react-bootstrap";
 
 const now = 16;
 let step = 1;
+let choose = null;
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -20,11 +21,20 @@ export default function Home() {
 
       <div>
         <ProgressBar variant="success" now={40} />
-        <ProgressBar  id="select-step-progress" variant="info" now={now} label={`第${step}步`}/>
-        
+        <ProgressBar
+          id="select-step-progress"
+          variant="info"
+          now={now}
+          label={`第${step}步`}
+        />
       </div>
+      <br />
       <div>
-
+        <DropdownButton id="dropdown-basic-button" title={choose || '请选择'}>
+          <Dropdown.Item eventKey="#/action-1">Action</Dropdown.Item>
+          <Dropdown.Item eventKey="#/action-2">Another action</Dropdown.Item>
+          <Dropdown.Item eventKey="#/action-3">Something else</Dropdown.Item>
+        </DropdownButton>
       </div>
       <footer className={styles.footer}>
         <a
