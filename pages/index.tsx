@@ -60,7 +60,7 @@ export default function Home() {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {optionValue[step].map((info) => (
-                <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>;
+                <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
