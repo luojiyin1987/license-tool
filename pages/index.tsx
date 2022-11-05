@@ -14,7 +14,7 @@ import {
 
 const now = 16;
 let step = 0;
-let choose:string|null = null;
+let choose: string | null = null;
 
 const optionValue = [
   [
@@ -59,10 +59,9 @@ export default function Home() {
             {choose || "请选择"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            
-            {optionValue[step].map((info) => {
-              <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>;
-            })}
+            {optionValue[step].map((info) => (
+                <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>;
+            ))}
           </Dropdown.Menu>
         </Dropdown>
       </div>
