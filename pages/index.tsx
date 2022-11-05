@@ -1,15 +1,36 @@
 import Head from "next/head";
 import Image from "next/image";
 
-import licenseInfo from "./license";
-
 import styles from "../styles/Home.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row, Col, ProgressBar, Dropdown, DropdownButton } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  ProgressBar,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
 
 const now = 16;
-let step = 1;
-let choose = null;
+let step = 0;
+let choose:string|null = null;
+
+const optionValue = [
+  [
+    { value: "q1strong_careless", text: "我不在乎" },
+    {
+      value: "q1strong_1",
+      info: "只选择流行并广泛使用或带有强烈社区支持的许可协议",
+    },
+    { value: "q1strong_0", text: "选择所有许可协议" },
+  ],
+  [
+    { value: "q2anocopyleft_0", text: "我想对代码的重复使用设置许可条件" },
+    { value: "q2anocopyleft_1", text: "我不想对代码的重复使用设置许可条件" },
+  ],
+];
+
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -25,16 +46,25 @@ export default function Home() {
           id="select-step-progress"
           variant="info"
           now={now}
-          label={`第${step}步`}
+          label={`第${step + 1}步`}
         />
       </div>
       <br />
       <div>
-        <DropdownButton id="dropdown-basic-button" title={choose || '请选择'}>
-          <Dropdown.Item eventKey="#/action-1">Action</Dropdown.Item>
-          <Dropdown.Item eventKey="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item eventKey="#/action-3">Something else</Dropdown.Item>
-        </DropdownButton>
+        <Dropdown>
+          <Dropdown.Toggle
+            id="dropdown-basic-button"
+            title={choose || "请选择"}
+          >
+            {choose || "请选择"}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            
+            {optionValue[step].map((info) => {
+              <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>;
+            })}
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
       <footer className={styles.footer}>
         <a
