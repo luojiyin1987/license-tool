@@ -12,26 +12,31 @@ import {
   DropdownButton,
 } from "react-bootstrap";
 
-const now = 16;
-let step = 0;
-let choose: string | null = null;
-
-const optionValue = [
-  [
-    { value: "q1strong_careless", text: "我不在乎" },
-    {
-      value: "q1strong_1",
-      info: "只选择流行并广泛使用或带有强烈社区支持的许可协议",
-    },
-    { value: "q1strong_0", text: "选择所有许可协议" },
-  ],
-  [
-    { value: "q2anocopyleft_0", text: "我想对代码的重复使用设置许可条件" },
-    { value: "q2anocopyleft_1", text: "我不想对代码的重复使用设置许可条件" },
-  ],
-];
-
 export default function Home() {
+  const now = 16;
+  let step = 0;
+  let choose: string | null = null;
+
+  const optionValue = [
+    [
+      { value: "q1strong_careless", text: "我不在乎" },
+      {
+        value: "q1strong_1",
+        info: "只选择流行并广泛使用或带有强烈社区支持的许可协议",
+      },
+      { value: "q1strong_0", text: "选择所有许可协议" },
+    ],
+    [
+      { value: "q2anocopyleft_0", text: "我想对代码的重复使用设置许可条件" },
+      { value: "q2anocopyleft_1", text: "我不想对代码的重复使用设置许可条件" },
+    ],
+  ];
+
+  const handleSelect = (e) => {
+    console.log(e);
+    step += 1;
+  };
+
   return (
     <div className={styles.container}>
       <h2>开源许可证选择器</h2>
@@ -45,13 +50,13 @@ export default function Home() {
         <ProgressBar
           id="select-step-progress"
           variant="info"
-          now={now}
+          now={(step + 1) * now}
           label={`第${step + 1}步`}
         />
       </div>
       <br />
       <div>
-        <Dropdown>
+        <Dropdown onSelect={handleSelect}>
           <Dropdown.Toggle
             id="dropdown-basic-button"
             title={choose || "请选择"}
@@ -60,7 +65,7 @@ export default function Home() {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {optionValue[step].map((info) => (
-                <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>
+              <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
