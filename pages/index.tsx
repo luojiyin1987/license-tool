@@ -72,7 +72,7 @@ export default function Home() {
 
   ];
 
-  const handleSelect = (e) => {
+  const handleSelect = (e:string) => {
     console.log(e);
     setStep(step+1)
     console.log('step', step)
