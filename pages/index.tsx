@@ -1,5 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
+import React,{useState} from 'react';
+
 
 import styles from "../styles/Home.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,8 +15,9 @@ import {
 } from "react-bootstrap";
 
 export default function Home() {
+  const [step,setStep]=useState(0);
   const now = 16;
-  let step = 0;
+ 
   let choose: string | null = null;
 
   const optionValue = [
@@ -34,7 +37,8 @@ export default function Home() {
 
   const handleSelect = (e) => {
     console.log(e);
-    step += 1;
+    setStep(step+1)
+    console.log('step', step)
   };
 
   return (
