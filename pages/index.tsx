@@ -13,6 +13,7 @@ import {
   Dropdown,
   DropdownButton,
 } from "react-bootstrap";
+import { info } from "console";
 
 export default function Home() {
   const [step,setStep]=useState(0);
@@ -20,6 +21,43 @@ export default function Home() {
  
   let choose: string | null = null;
 
+  const steps = ['1', '2-1', '2-2', '2-3', '3', '4-1', '4-2', '5', '6', '7'],
+  stepsEnabled = [true, true, false, false, true, true, false, true, true, true],
+  stepHistory:number[] = [];
+
+  let currStepIndex:number = -1;
+  const  enabledSteps =(index:number, enabled:boolean)=> {
+    stepsEnabled[index] = enabled;
+  };
+  const getStepIndex = (direction:string) {
+    let newStep;
+
+    if(!direction && currStepIndex == -1) {
+      newStep = 0;
+      stepHistory.push(newStep);
+    }  else if(direction== 'prev') {
+      newStep = stepHistory.pop() &&  stepHistory[stepHistory.length -1] 
+    } 
+
+     else {
+        newStep = (function() {
+          for(let  i=stepHistory.slice(-1)[0] + 1; i < stepsEnabled.length; i++ ){
+            if(stepsEnabled[i]) return i
+          }
+
+          return  -1
+        })();
+        stepHistory.push(newStep);
+     }
+
+     return newStep;
+  }
+
+  const switchStep=(stepIndex: number)=> {
+      currStepIndex = stepIndex >=0? stepIndex: currStepIndex;
+  }
+
+  
   const optionValue = [
     [
       { value: "q1strong_careless", text: "我不在乎" },
