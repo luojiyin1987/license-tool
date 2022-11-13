@@ -327,7 +327,7 @@ function processConditionsOnReuseQuestion(simpleQid, choice, licenceData) {
 export default function Home() {
   const [currStepIndex, setStep] = useState(0);
   
-  const now = 16;
+  const now = 12;
 
   let choose: string | null = null;
   // initLicences(allLicences);
@@ -547,7 +547,7 @@ export default function Home() {
             {choose || "请选择"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {optionValue[currStepIndex].map((info) => (
+            {optionValue[steps[currStepIndex]].map((info) => (
               <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>
             ))}
           </Dropdown.Menu>
