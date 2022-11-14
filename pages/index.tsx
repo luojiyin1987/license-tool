@@ -89,7 +89,7 @@ const limitingQs = [ONE_STRONG_LICENCES];
 
 function initLicences(allLicences): void {
   loadedLicenceData = allLicences.feed.entry;
-  //console.log("allLicences", allLicences.feed.entry)
+  console.log("allLicences", allLicences.feed.entry)
   initScores(allLicences.feed.entry);
 
   // console.log("loadedLicenceData", loadedLicenceData)
@@ -153,8 +153,8 @@ function processLimitingQuestion(fullChoice: string, licenceData) {
 
 function updateForm(fullChoice: string) {
   const choiceInfo = fullChoice.split("_");
-  console.log("updateForm, fullChoice choiceInfo",   choiceInfo);
-  console.log("updateForm, fullChoice choiceInfo[0]",   choiceInfo[0], TWO_NO_COPYLEFT);
+  console.log("updateForm, fullChoice choiceInfo,TWO_NO_COPYLEFT",   choiceInfo,TWO_NO_COPYLEFT);
+  
   if (choiceInfo[0] == TWO_NO_COPYLEFT) {
     if (Number(choiceInfo[1]) === 0) {
       openBox("q2b");
@@ -163,10 +163,10 @@ function updateForm(fullChoice: string) {
       closeBox("q2b");
       closeBox("q2c");
     }
-  } else if (choiceInfo[0] == TWO_STRONG_COPYLEFT) closeBox("q2c");
-  else if (choiceInfo[0] == TWO_WEAK_COPYLEFT) openBox("q2c");
-  else if (choiceInfo[0] == FOUR_GRANT_PATENTS)
-    if (choiceInfo[1] == DONT_CARE || Number(fullChoice[1]) === 1)
+  } else if (choiceInfo[0] == "q2bstrong") closeBox("q2c");
+  else if (choiceInfo[0] == "q2bweak") openBox("q2c");
+  else if (choiceInfo[0] == "q4apat")
+    if (choiceInfo[1] == "careless" || Number(fullChoice[1]) === 1)
       openBox("q4b");
     else closeBox("q4b");
 
@@ -329,9 +329,9 @@ function processConditionsOnReuseQuestion(simpleQid, choice, licenceData) {
   //console.log("processConditionsOnReuseQuestion newMatch", newMatch);
   return newMatch;
 }
-
+initLicences(allLicences);
 export default function Home() {
-  const [currStepIndex, setStep] = useState(0);
+  const [currStepIndex, setCurrStepIndex] = useState(0);
   
   const now = 12;
 
@@ -360,26 +360,28 @@ export default function Home() {
   };
   function getStepIndex(direction: string){
       let newStep:number| undefined= 0;
-
+      console.log("getStepIndex currStepIndex" ,currStepIndex)
       if (direction === 'prev') {
         for(let i= 0; i<stepsEnabled.length; i++ ) {
           if(stepsEnabled[i]) {
              
             if(newStep === currStepIndex -1) {
-              return newStep;
+              console.log("getStepIndex newStep steps", newStep,steps[newStep])
+              return i;
             }
             newStep ++;               
          }
       }
         
       }  else {
-        console.log("getStepIndex  newStep 3, stepHistory ,currStepIndex", newStep,currStepIndex )
-          
+         console.log("setps",steps);
+          console.log("stepsEnabled",stepsEnabled)
            for(let i= 0; i<stepsEnabled.length; i++ ) {
                if(stepsEnabled[i]) {
-                  
+                 console.log("i stepsEnabled[i] newStep",i , stepsEnabled[i] ,newStep)  
                  if(newStep === currStepIndex ) {
-                   return newStep;
+                  console.log("getStepIndex newStep steps", newStep,steps[i])
+                   return i;
                  } 
                  newStep++
 
@@ -526,13 +528,13 @@ export default function Home() {
   };
 
   const getNext=(e)=>{
+    console.log("---------------getNext");
     //console.log("button e", e)
-    console.log("getnext",getStepIndex('next'));
-    getStepIndex("next")
-    console.log("getNext steps",steps[getStepIndex("next")])
-    setStep(currStepIndex+1)
+    setCurrStepIndex(currStepIndex+1)
+ 
+    
   }
-  initLicences(allLicences);
+
   return (
     <div className={styles.container}>
       <h2>开源许可证选择器</h2>
