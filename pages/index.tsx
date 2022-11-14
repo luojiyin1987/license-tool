@@ -17,7 +17,8 @@ import {
 } from "react-bootstrap";
 
 import allLicences from "../components/matrix.json" assert { type: "json" };
-import { timeStamp } from "console";
+import { info } from "console";
+
 
 let loadedLicenceData: {}[] = [];
 let scores = [];
@@ -91,9 +92,9 @@ function initLicences(allLicences): void {
   //console.log("allLicences", allLicences.feed.entry)
   initScores(allLicences.feed.entry);
 
-  //console.log("loadedLicenceData", loadedLicenceData)
+  // console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
-  console.log("scores", scores);
+  // console.log("scores", scores);
 }
 
 function initScores(allApplicableLicences): void {
@@ -108,7 +109,7 @@ function initScores(allApplicableLicences): void {
 function processChoice(formFieldId: string, fullChoice: string) {
   choices[formFieldId] = fullChoice;
   console.log("choices", choices[formFieldId]);
-  console.log("isLimitingQuestion(fullChoice)", isLimitingQuestion(fullChoice));
+  //console.log("isLimitingQuestion(fullChoice)", isLimitingQuestion(fullChoice));
 
   //第一个问题选择 想过处理
   if (isLimitingQuestion(fullChoice)) prepareLicencesList(fullChoice);
@@ -124,8 +125,8 @@ function isLimitingQuestion(question: string) {
 
 function prepareLicencesList(fullChoice: string) {
   const choice: number | string = fullChoice.split("_")[1];
-  console.log("loadedLicenceData prepareLicencesList", loadedLicenceData);
-  console.log("choice", choice);
+  //console.log("loadedLicenceData prepareLicencesList", loadedLicenceData);
+  //console.log("choice", choice);
   if (Number(choice) !== 1) initScores(loadedLicenceData);
   // limit list of licences to those matching the req.
   else
@@ -142,17 +143,18 @@ function processLimitingQuestion(fullChoice: string, licenceData) {
   const choiceInfo: string[] = fullChoice.split("_");
 
   let newMatch = 0;
-  console.log("processLimitingQuestion licenceData", licenceData, choiceInfo);
+  //console.log("processLimitingQuestion licenceData", licenceData, choiceInfo);
   if (Number(choiceInfo[1]) != 1 || licenceData.content.includes(choiceInfo[0]))
     newMatch++;
 
-  console.log("processLimitingQuestion newMatch", newMatch);
+  //console.log("processLimitingQuestion newMatch", newMatch);
   return newMatch;
 }
 
 function updateForm(fullChoice: string) {
   const choiceInfo = fullChoice.split("_");
-  console.log("updateForm, fullChoice", qs, choices, fullChoice);
+  console.log("updateForm, fullChoice choiceInfo",   choiceInfo);
+  console.log("updateForm, fullChoice choiceInfo[0]",   choiceInfo[0], TWO_NO_COPYLEFT);
   if (choiceInfo[0] == TWO_NO_COPYLEFT) {
     if (Number(choiceInfo[1]) === 0) {
       openBox("q2b");
@@ -168,16 +170,20 @@ function updateForm(fullChoice: string) {
       openBox("q4b");
     else closeBox("q4b");
 
-  console.log("updateForm, qs choices", qs, choices);
+  console.log("updateForm, qs choices",  choices);
 }
 
 function openBox(boxId: string) {
+  console.log("openBox boxId", boxId);
   enabledSteps(qs.indexOf(boxId) + 1, true);
+  console.log("openBox stepsEnabled",stepsEnabled)
 }
 
 function closeBox(boxId: string) {
   choices[boxId] = null;
+  console.log("closeBox boxId", boxId);
   enabledSteps(qs.indexOf(boxId) + 1, false);
+  console.log("closeBox stepsEnabled",stepsEnabled)
 }
 
 function enabledSteps(index: number, enabled: boolean) {
@@ -187,7 +193,7 @@ function enabledSteps(index: number, enabled: boolean) {
 function displayLicences() {
   loadedLicenceData.forEach(calculateScoresForLicence);
   scores.sort(sortScores);
-  console.log("displayLicences scores", scores);
+  //console.log("displayLicences scores", scores);
 
   const score_list = {};
 
@@ -198,42 +204,42 @@ function displayLicences() {
       })
     ).text;
 
-  console.log("displayLicences scores", scores);
-  console.log("displayLicences score_list", score_list);
+  //console.log("displayLicences scores", scores);
+  //console.log("displayLicences score_list", score_list);
 }
 
 function calculateScoresForLicence(licenceData) {
-  console.log("calculateScoresForLicence , licenceData", licenceData);
+  //console.log("calculateScoresForLicence , licenceData", licenceData);
   let nrAnswers = 0,
     nrMatches = 0,
     score = -1;
-  console.log("qs", qs, choices);
+  //console.log("qs", qs, choices);
   qs.forEach(function (item) {
-    console.log("item", item);
+    //console.log("item", item);
     let fullChoice = choices[item];
-    console.log("fullChoice", fullChoice);
-    console.log(fullChoice == null);
+    //console.log("fullChoice", fullChoice);
+    //console.log(fullChoice == null);
     if (fullChoice == null) return;
 
     const myChoice = fullChoice.split("_")[0];
 
     // choice made
 
-    console.log("myChoice", myChoice);
+    //console.log("myChoice", myChoice);
     if (myChoice != -1) {
       nrAnswers++;
-      console.log("myChoice != -1 licenceData", licenceData);
+      //console.log("myChoice != -1 licenceData", licenceData);
       nrMatches = calculateQuestion(fullChoice, licenceData, nrMatches);
     }
   });
 
   if (nrAnswers > 0) score = nrMatches / nrAnswers;
 
-  console.log("nrAnswers", nrAnswers, score, nrMatches);
+  //console.log("nrAnswers", nrAnswers, score, nrMatches);
   scores.forEach(function (item) {
     if (item.title === licenceData.title) item.score = score;
   });
-  console.log("scores", scores);
+  //console.log("scores", scores);
 }
 
 function sortScores(a, b) {
@@ -282,7 +288,7 @@ function calculateScore(licenceData) {
 
 function calculateQuestion(fullChoice, licenceData, nrMatches) {
   fullChoice = fullChoice.split("_");
-  console.log("calculateQuestion fullChoice", fullChoice, licenceData);
+  //console.log("calculateQuestion fullChoice", fullChoice, licenceData);
   if (simpleYesNoQs.includes(fullChoice[0]))
     nrMatches += processSimpleYesNo(fullChoice[0], fullChoice[1], licenceData);
   else if (isLimitingQuestion(fullChoice.join("_")))
@@ -307,12 +313,12 @@ function processSimpleYesNo(simpleQid, choice, licenceData): number {
     choice == DONT_CARE
   )
     newMatch++;
-  console.log("processSimpleYesNo newMatch", newMatch);
+  //console.log("processSimpleYesNo newMatch", newMatch);
   return newMatch;
 }
 
 function processConditionsOnReuseQuestion(simpleQid, choice, licenceData) {
-  console.log("processConditionsOnReuseQuestion licenceData", licenceData);
+  //console.log("processConditionsOnReuseQuestion licenceData", licenceData);
   let newMatch = 0,
     questionMatch = licenceData.content.includes(simpleQid);
 
@@ -320,7 +326,7 @@ function processConditionsOnReuseQuestion(simpleQid, choice, licenceData) {
 
   // set q2b and q2c to 'not applicable'
   if (simpleQid == TWO_NO_COPYLEFT && choice == 0 && !questionMatch) newMatch++;
-  console.log("processConditionsOnReuseQuestion newMatch", newMatch);
+  //console.log("processConditionsOnReuseQuestion newMatch", newMatch);
   return newMatch;
 }
 
@@ -333,7 +339,7 @@ export default function Home() {
   // initLicences(allLicences);
   // processChoice("q1", "q1strong_careless");
   // processChoice("q2", "q2anocopyleft_0");
-  const steps = ["q1", "q2a", "q2b","q3","q4a","q4b","q5","q6","q7"],
+  const steps = ["q1", "q2a","q2b", "q2c", "q3","q4a","q4b","q5","q6","q7"],
     stepsEnabled = [
       true,
       true,
@@ -349,33 +355,41 @@ export default function Home() {
     stepHistory: number[] = [];
 
  
-  const enabledSteps = (index: number, enabled: boolean) => {
+  function enabledSteps(index: number, enabled: boolean) {
     stepsEnabled[index] = enabled;
   };
-  const getStepIndex = (direction: string) => {
-    let newStep;
+  function getStepIndex(direction: string){
+      let newStep:number| undefined= 0;
 
-    if (!direction && currStepIndex == -1) {
-      newStep = 0;
-      stepHistory.push(newStep);
-    } else if (direction == "prev") {
-      newStep = stepHistory.pop() && stepHistory[stepHistory.length - 1];
-    } else {
-      newStep = (function () {
-        for (
-          let i = stepHistory.slice(-1)[0] + 1;
-          i < stepsEnabled.length;
-          i++
-        ) {
-          if (stepsEnabled[i]) return i;
-        }
+      if (direction === 'prev') {
+        for(let i= 0; i<stepsEnabled.length; i++ ) {
+          if(stepsEnabled[i]) {
+             
+            if(newStep === currStepIndex -1) {
+              return newStep;
+            }
+            newStep ++;               
+         }
+      }
+        
+      }  else {
+        console.log("getStepIndex  newStep 3, stepHistory ,currStepIndex", newStep,currStepIndex )
+          
+           for(let i= 0; i<stepsEnabled.length; i++ ) {
+               if(stepsEnabled[i]) {
+                  
+                 if(newStep === currStepIndex ) {
+                   return newStep;
+                 } 
+                 newStep++
 
-        return -1;
-      })();
-      stepHistory.push(newStep);
-    }
+              }
+           }
+      }
+      
+      return newStep;
+      
 
-    return newStep;
   };
 
   const switchStep = (stepIndex: number) => {
@@ -503,19 +517,22 @@ export default function Home() {
     
   
     console.log("currStepIndex", currStepIndex);
-    console.log("steps[step]",steps[currStepIndex]);
-    const  choice = steps[currStepIndex];
+    console.log("nest",getStepIndex("next"))
+    console.log("steps[getStepIndex]",steps[getStepIndex("next")]);
+    const  choice = steps[getStepIndex("next")];
     processChoice(choice ,e)
    
     
   };
 
   const getNext=(e)=>{
-    console.log("button e", e)
-    switchStep(getStepIndex('next'));
+    //console.log("button e", e)
+    console.log("getnext",getStepIndex('next'));
+    getStepIndex("next")
+    console.log("getNext steps",steps[getStepIndex("next")])
     setStep(currStepIndex+1)
   }
-
+  initLicences(allLicences);
   return (
     <div className={styles.container}>
       <h2>开源许可证选择器</h2>
@@ -524,7 +541,7 @@ export default function Home() {
       </p>
       <h4 className="warning black">切记：必须阅读并理解您选择的许可协议。</h4>
       <div>
-      {licenceTips[steps[currStepIndex]].map((tip) => (
+      {licenceTips[steps[getStepIndex("next")]].map((tip) => (
               <p>{tip.text}</p>
             ))}
       </div>
@@ -547,7 +564,7 @@ export default function Home() {
             {choose || "请选择"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {optionValue[steps[currStepIndex]].map((info) => (
+            {optionValue[steps[getStepIndex("next")]].map((info) => (
               <Dropdown.Item eventKey={info.value}>{info.text}</Dropdown.Item>
             ))}
           </Dropdown.Menu>
