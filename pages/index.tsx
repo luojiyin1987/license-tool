@@ -87,6 +87,9 @@ const simpleYesNoQs = [
 
 const limitingQs = [ONE_STRONG_LICENCES];
 
+const steps = ["q1", "q2a","q2b", "q2c", "q3","q4a","q4b","q5","q6","q7"];
+
+
 function initLicences(allLicences): void {
   loadedLicenceData = allLicences.feed.entry;
   console.log("allLicences", allLicences.feed.entry)
@@ -176,6 +179,7 @@ function updateForm(fullChoice: string) {
 function openBox(boxId: string) {
   console.log("openBox boxId", boxId);
   enabledSteps(qs.indexOf(boxId) + 1, true);
+  console.log("               steps",steps);
   console.log("openBox stepsEnabled",stepsEnabled)
 }
 
@@ -183,6 +187,7 @@ function closeBox(boxId: string) {
   choices[boxId] = null;
   console.log("closeBox boxId", boxId);
   enabledSteps(qs.indexOf(boxId) + 1, false);
+  console.log("                steps",steps);
   console.log("closeBox stepsEnabled",stepsEnabled)
 }
 
@@ -332,6 +337,7 @@ function processConditionsOnReuseQuestion(simpleQid, choice, licenceData) {
 initLicences(allLicences);
 export default function Home() {
   const [currStepIndex, setCurrStepIndex] = useState(0);
+  const [Text, setText] = useState("下一步");
   
   const now = 12;
 
@@ -339,20 +345,8 @@ export default function Home() {
   // initLicences(allLicences);
   // processChoice("q1", "q1strong_careless");
   // processChoice("q2", "q2anocopyleft_0");
-  const steps = ["q1", "q2a","q2b", "q2c", "q3","q4a","q4b","q5","q6","q7"],
-    stepsEnabled = [
-      true,
-      true,
-      false,
-      false,
-      true,
-      true,
-      false,
-      true,
-      true,
-      true,
-    ],
-    stepHistory: number[] = [];
+
+ 
 
  
   function enabledSteps(index: number, enabled: boolean) {
@@ -374,8 +368,8 @@ export default function Home() {
       }
         
       }  else {
-         console.log("setps",steps);
-          console.log("stepsEnabled",stepsEnabled)
+         console.log( "setps",steps);
+          console.log("Enabl",stepsEnabled)
            for(let i= 0; i<stepsEnabled.length; i++ ) {
                if(stepsEnabled[i]) {
                  console.log("i stepsEnabled[i] newStep",i , stepsEnabled[i] ,newStep)  
@@ -518,9 +512,9 @@ export default function Home() {
     console.log("handleSelect e",e);
     
   
-    console.log("currStepIndex", currStepIndex);
-    console.log("nest",getStepIndex("next"))
-    console.log("steps[getStepIndex]",steps[getStepIndex("next")]);
+    // console.log("currStepIndex", currStepIndex);
+    // console.log("nest",getStepIndex("next"))
+    // console.log("steps[getStepIndex]",steps[getStepIndex("next")]);
     const  choice = steps[getStepIndex("next")];
     processChoice(choice ,e)
    
@@ -529,10 +523,15 @@ export default function Home() {
 
   const getNext=(e)=>{
     console.log("---------------getNext");
-    //console.log("button e", e)
-    setCurrStepIndex(currStepIndex+1)
- 
+    console.log("button e", e)
     
+    console.log("getNext,currStepIndex ", currStepIndex)
+    if(steps[getStepIndex("next")] ==="q7") {
+        setText("最后一步")
+    } else {
+       setCurrStepIndex(currStepIndex +1)
+    }
+     
   }
 
   return (
@@ -574,7 +573,7 @@ export default function Home() {
       </div>
 
       <div className={styles.footer}>
-      <Button variant="primary"  onClick={getNext} >下一步</Button>{' '}
+      <Button variant="primary"  onClick={getNext} >{Text}</Button>{' '}
       </div>
 
       <div >
