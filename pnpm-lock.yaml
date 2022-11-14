@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@types/node': 18.11.7
+  '@types/react': 18.0.25
   bootstrap: ^5.2.2
   eslint: ^8.26.0
   next: ^12.3.1
@@ -14,11 +15,12 @@ dependencies:
   bootstrap: registry.npmjs.org/bootstrap/5.2.2
   next: registry.npmjs.org/next/12.3.1_sfoxds7t5ydpegc3knd667wn6m
   react: registry.npmjs.org/react/17.0.2
-  react-bootstrap: registry.npmjs.org/react-bootstrap/2.5.0_sfoxds7t5ydpegc3knd667wn6m
+  react-bootstrap: registry.npmjs.org/react-bootstrap/2.5.0_7lpwapvzekzihmf4mk5gspfxj4
   react-dom: registry.npmjs.org/react-dom/17.0.2_react@17.0.2
 
 devDependencies:
   '@types/node': registry.npmjs.org/@types/node/18.11.7
+  '@types/react': registry.npmjs.org/@types/react/18.0.25
   eslint: registry.npmjs.org/eslint/8.26.0
   typescript: registry.npmjs.org/typescript/4.8.4
 
@@ -324,31 +326,28 @@ packages:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.5.tgz}
     name: '@types/prop-types'
     version: 15.7.5
-    dev: false
 
   registry.npmjs.org/@types/react-transition-group/4.4.5:
     resolution: {integrity: sha512-juKD/eiSM3/xZYzjuzH6ZwpP+/lejltmiS3QEzV/vmb/Q8+HfDmxu+Baga8UEMGBqV88Nbg4l2hY/K2DkyaLLA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.5.tgz}
     name: '@types/react-transition-group'
     version: 4.4.5
     dependencies:
-      '@types/react': registry.npmjs.org/@types/react/18.0.24
+      '@types/react': registry.npmjs.org/@types/react/18.0.25
     dev: false
 
-  registry.npmjs.org/@types/react/18.0.24:
-    resolution: {integrity: sha512-wRJWT6ouziGUy+9uX0aW4YOJxAY0bG6/AOk5AW5QSvZqI7dk6VBIbXvcVgIw/W5Jrl24f77df98GEKTJGOLx7Q==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@types/react/-/react-18.0.24.tgz}
+  registry.npmjs.org/@types/react/18.0.25:
+    resolution: {integrity: sha512-xD6c0KDT4m7n9uD4ZHi02lzskaiqcBxf4zi+tXZY98a04wvc0hi/TcCPC2FOESZi51Nd7tlUeOJY8RofL799/g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@types/react/-/react-18.0.25.tgz}
     name: '@types/react'
-    version: 18.0.24
+    version: 18.0.25
     dependencies:
       '@types/prop-types': registry.npmjs.org/@types/prop-types/15.7.5
       '@types/scheduler': registry.npmjs.org/@types/scheduler/0.16.2
       csstype: registry.npmjs.org/csstype/3.1.1
-    dev: false
 
   registry.npmjs.org/@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz}
     name: '@types/scheduler'
     version: 0.16.2
-    dev: false
 
   registry.npmjs.org/@types/warning/3.0.0:
     resolution: {integrity: sha512-t/Tvs5qR47OLOr+4E9ckN8AmP2Tf16gWq+/qA4iUGS/OOyHVO8wv2vjJuX8SNOUTJyWb+2t7wJm6cXILFnOROA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@types/warning/-/warning-3.0.0.tgz}
@@ -496,7 +495,6 @@ packages:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/csstype/-/csstype-3.1.1.tgz}
     name: csstype
     version: 3.1.1
-    dev: false
 
   registry.npmjs.org/debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/debug/-/debug-4.3.4.tgz}
@@ -1147,7 +1145,7 @@ packages:
     version: 1.2.3
     dev: true
 
-  registry.npmjs.org/react-bootstrap/2.5.0_sfoxds7t5ydpegc3knd667wn6m:
+  registry.npmjs.org/react-bootstrap/2.5.0_7lpwapvzekzihmf4mk5gspfxj4:
     resolution: {integrity: sha512-j/aLR+okzbYk61TM3eDOU1NqOqnUdwyVrF+ojoCRUxPdzc2R0xXvqyRsjSoyRoCo7n82Fs/LWjPCin/QJNdwvA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.5.0.tgz}
     id: registry.npmjs.org/react-bootstrap/2.5.0
     name: react-bootstrap
@@ -1163,6 +1161,7 @@ packages:
       '@babel/runtime': registry.npmjs.org/@babel/runtime/7.20.0
       '@restart/hooks': registry.npmjs.org/@restart/hooks/0.4.7_react@17.0.2
       '@restart/ui': registry.npmjs.org/@restart/ui/1.4.0_sfoxds7t5ydpegc3knd667wn6m
+      '@types/react': registry.npmjs.org/@types/react/18.0.25
       '@types/react-transition-group': registry.npmjs.org/@types/react-transition-group/4.4.5
       classnames: registry.npmjs.org/classnames/2.3.2
       dom-helpers: registry.npmjs.org/dom-helpers/5.2.1
@@ -1394,7 +1393,7 @@ packages:
       react: '>=15.0.0'
     dependencies:
       '@babel/runtime': registry.npmjs.org/@babel/runtime/7.20.0
-      '@types/react': registry.npmjs.org/@types/react/18.0.24
+      '@types/react': registry.npmjs.org/@types/react/18.0.25
       invariant: registry.npmjs.org/invariant/2.2.4
       react: registry.npmjs.org/react/17.0.2
       react-lifecycles-compat: registry.npmjs.org/react-lifecycles-compat/3.0.4
