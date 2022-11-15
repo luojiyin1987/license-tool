@@ -18,10 +18,57 @@ import {
 import allLicences from "../components/matrix.json" assert { type: "json" };
 import { optionValue, licenceTips } from "../components/helper";
 
+export interface LicenceInfo {
+  feed: Feed
+}
+
+export interface Feed  {
+  id: string
+  updated: string
+  category: string
+  title: string
+  link: string[]
+  author: Author
+  totalResults: number
+  startIndex: number
+  entry: Entry[]
+}
+
+export interface Entry {
+  id: string
+  updated: string
+  category: string
+  title: string
+  content: string
+  link: string
+  name: string
+  aka: string
+  q1strong: any
+  q2anocopyleft: any
+  q2bweak: any
+  q2bstrong: any
+  q2cmod: any
+  q2clib: any
+  q2cfile: any
+  q3juris: any
+  q3specjuris: string
+  q4apat: any
+  q4bpatret: any
+  q5enhattr: any
+  q6noloophole: any
+  q7nopromo: any
+}
+
+export interface Author {
+  name: string
+  email: string
+}
+
+
 
 let loadedLicenceData: {}[] = [];
-let scores = [];
-let loadedLimitedLicenceData = [];
+let scores:{}[] = [];
+let loadedLimitedLicenceData:{}[] = [];
 
 const choices = {
   q1: null,
@@ -36,8 +83,8 @@ const choices = {
   q7: null,
 };
 
-const DONT_CARE = "careless";
-const qs = ["q2a", "q2b", "q2c", "q3", "q4a", "q4b", "q5", "q6", "q7"];
+const DONT_CARE:string = "careless";
+const qs:string[] = ["q2a", "q2b", "q2c", "q3", "q4a", "q4b", "q5", "q6", "q7"];
 
 const stepsEnabled: boolean[] = [
   true,
@@ -67,7 +114,7 @@ const ONE_STRONG_LICENCES = "q1strong",
   SIX_NO_LOOPHOLE = "q6noloophole",
   SEVEN_NO_PROMO = "q7nopromo";
 
-const conditionsReuseQs = [
+const conditionsReuseQs:string[] = [
   TWO_NO_COPYLEFT,
   TWO_STRONG_COPYLEFT,
   TWO_WEAK_COPYLEFT,
@@ -76,7 +123,7 @@ const conditionsReuseQs = [
   TWO_WEAK_LIB,
 ];
 
-const simpleYesNoQs = [
+const simpleYesNoQs:string[] = [
   THREE_JURISDICTION,
   FOUR_GRANT_PATENTS,
   FOUR_PATENT_RET,
@@ -85,9 +132,9 @@ const simpleYesNoQs = [
   SEVEN_NO_PROMO,
 ];
 
-const limitingQs = [ONE_STRONG_LICENCES];
+const limitingQs:string[] = [ONE_STRONG_LICENCES];
 
-function initLicences(allLicences): void {
+function initLicences(allLicences:LicenceInfo): void {
   loadedLicenceData = allLicences.feed.entry;
   //console.log("allLicences", allLicences.feed.entry);
   initScores(allLicences.feed.entry);
@@ -96,7 +143,7 @@ function initLicences(allLicences): void {
   // console.log("scores", scores);
 }
 
-function initScores(allApplicableLicences): void {
+function initScores(allApplicableLicences:Entry[]): void {
   scores = allApplicableLicences.map(function (item) {
     return {
       title: item.title,
@@ -138,7 +185,7 @@ function prepareLicencesList(fullChoice: string) {
     );
 }
 
-function processLimitingQuestion(fullChoice: string, licenceData) {
+function processLimitingQuestion(fullChoice: string, licenceData):number {
   const choiceInfo: string[] = fullChoice.split("_");
 
   let newMatch = 0;
@@ -150,7 +197,7 @@ function processLimitingQuestion(fullChoice: string, licenceData) {
   return newMatch;
 }
 
-function updateForm(fullChoice: string) {
+function updateForm(fullChoice: string):void {
   const choiceInfo = fullChoice.split("_");
   console.log(
     "updateForm, fullChoice choiceInfo,TWO_NO_COPYLEFT",
@@ -176,20 +223,20 @@ function updateForm(fullChoice: string) {
   console.log("updateForm, qs choices", choices);
 }
 
-function openBox(boxId: string) {
+function openBox(boxId: string): void{
   console.log("openBox boxId", boxId);
   enabledSteps(qs.indexOf(boxId) + 1, true);
   console.log("               steps", steps);
   console.log("openBox stepsEnabled", stepsEnabled);
 }
 
-function closeBox(boxId: string) {
+function closeBox(boxId: string):void {
   choices[boxId] = null;
 
   enabledSteps(qs.indexOf(boxId) + 1, false);
 }
 
-function enabledSteps(index: number, enabled: boolean) {
+function enabledSteps(index: number, enabled: boolean):void {
   stepsEnabled[index] = enabled;
 }
 
