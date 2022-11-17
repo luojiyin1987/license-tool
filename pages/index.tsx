@@ -19,56 +19,54 @@ import allLicences from "../components/matrix.json" assert { type: "json" };
 import { optionValue, licenceTips } from "../components/helper";
 
 export interface LicenceInfo {
-  feed: Feed
+  feed: Feed;
 }
 
-export interface Feed  {
-  id: string
-  updated: string
-  category: string
-  title: string
-  link: string[]
-  author: Author
-  totalResults: number
-  startIndex: number
-  entry: Entry[]
+export interface Feed {
+  id: string;
+  updated: string;
+  category: string;
+  title: string;
+  link: string[];
+  author: Author;
+  totalResults: number;
+  startIndex: number;
+  entry: Entry[];
 }
 
 export interface Entry {
-  id: string
-  updated: string
-  category: string
-  title: string
-  content: string
-  link: string
-  name: string
-  aka: string
-  q1strong: any
-  q2anocopyleft: any
-  q2bweak: any
-  q2bstrong: any
-  q2cmod: any
-  q2clib: any
-  q2cfile: any
-  q3juris: any
-  q3specjuris: string
-  q4apat: any
-  q4bpatret: any
-  q5enhattr: any
-  q6noloophole: any
-  q7nopromo: any
+  id: string;
+  updated: string;
+  category: string;
+  title: string;
+  content: string;
+  link: string;
+  name: string;
+  aka: string;
+  q1strong: any;
+  q2anocopyleft: any;
+  q2bweak: any;
+  q2bstrong: any;
+  q2cmod: any;
+  q2clib: any;
+  q2cfile: any;
+  q3juris: any;
+  q3specjuris: string;
+  q4apat: any;
+  q4bpatret: any;
+  q5enhattr: any;
+  q6noloophole: any;
+  q7nopromo: any;
 }
 
 export interface Author {
-  name: string
-  email: string
+  name: string;
+  email: string;
 }
 
-
-
 let loadedLicenceData: {}[] = [];
-let scores:{}[] = [];
-let loadedLimitedLicenceData:{}[] = [];
+let scores: {}[] = [];
+let loadedLimitedLicenceData: {}[] = [];
 
 const choices = {
   q1: null,
@@ -83,8 +81,18 @@ const choices = {
   q7: null,
 };
 
-const DONT_CARE:string = "careless";
-const qs:string[] = ["q2a", "q2b", "q2c", "q3", "q4a", "q4b", "q5", "q6", "q7"];
+const DONT_CARE: string = "careless";
+const qs: string[] = [
+  "q2a",
+  "q2b",
+  "q2c",
+  "q3",
+  "q4a",
+  "q4b",
+  "q5",
+  "q6",
+  "q7",
+];
 
 const stepsEnabled: boolean[] = [
   true,
@@ -114,7 +122,7 @@ const ONE_STRONG_LICENCES = "q1strong",
   SIX_NO_LOOPHOLE = "q6noloophole",
   SEVEN_NO_PROMO = "q7nopromo";
 
-const conditionsReuseQs:string[] = [
+const conditionsReuseQs: string[] = [
   TWO_NO_COPYLEFT,
   TWO_STRONG_COPYLEFT,
   TWO_WEAK_COPYLEFT,
@@ -123,7 +131,7 @@ const conditionsReuseQs:string[] = [
   TWO_WEAK_LIB,
 ];
 
-const simpleYesNoQs:string[] = [
+const simpleYesNoQs: string[] = [
   THREE_JURISDICTION,
   FOUR_GRANT_PATENTS,
   FOUR_PATENT_RET,
@@ -132,22 +140,23 @@ const simpleYesNoQs:string[] = [
   SEVEN_NO_PROMO,
 ];
 
-const limitingQs:string[] = [ONE_STRONG_LICENCES];
+const limitingQs: string[] = [ONE_STRONG_LICENCES];
 
-function initLicences(allLicences:LicenceInfo): void {
+function initLicences(allLicences: LicenceInfo): void {
   loadedLicenceData = allLicences.feed.entry;
   //console.log("allLicences", allLicences.feed.entry);
   initScores(allLicences.feed.entry);
   // console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
-  // console.log("scores", scores);
+   //console.log("scores", scores);
+  displayLicences();
 }
 
-function initScores(allApplicableLicences:Entry[]): void {
+function initScores(allApplicableLicences: Entry[]): void {
   scores = allApplicableLicences.map(function (item) {
     return {
       title: item.title,
-      score: -1,
+      score: 100,
     };
   });
 }
@@ -185,7 +194,7 @@ function prepareLicencesList(fullChoice: string) {
     );
 }
 
-function processLimitingQuestion(fullChoice: string, licenceData):number {
+function processLimitingQuestion(fullChoice: string, licenceData): number {
   const choiceInfo: string[] = fullChoice.split("_");
 
   let newMatch = 0;
@@ -197,7 +206,7 @@ function processLimitingQuestion(fullChoice: string, licenceData):number {
   return newMatch;
 }
 
-function updateForm(fullChoice: string):void {
+function updateForm(fullChoice: string): void {
   const choiceInfo = fullChoice.split("_");
   console.log(
     "updateForm, fullChoice choiceInfo,TWO_NO_COPYLEFT",
@@ -223,20 +232,20 @@ function updateForm(fullChoice: string):void {
   console.log("updateForm, qs choices", choices);
 }
 
-function openBox(boxId: string): void{
+function openBox(boxId: string): void {
   console.log("openBox boxId", boxId);
   enabledSteps(qs.indexOf(boxId) + 1, true);
   console.log("               steps", steps);
   console.log("openBox stepsEnabled", stepsEnabled);
 }
 
-function closeBox(boxId: string):void {
+function closeBox(boxId: string): void {
   choices[boxId] = null;
 
   enabledSteps(qs.indexOf(boxId) + 1, false);
 }
 
-function enabledSteps(index: number, enabled: boolean):void {
+function enabledSteps(index: number, enabled: boolean): void {
   stepsEnabled[index] = enabled;
 }
 
@@ -391,9 +400,7 @@ export default function Home() {
   // processChoice("q1", "q1strong_careless");
   // processChoice("q2", "q2anocopyleft_0");
 
-  function enabledSteps(index: number, enabled: boolean) {
-    stepsEnabled[index] = enabled;
-  }
+ 
   function getStepIndex(direction: string) {
     let newStep: number | undefined = 0;
     console.log("getStepIndex currStepIndex", currStepIndex);
@@ -425,7 +432,12 @@ export default function Home() {
     return newStep;
   }
 
-  
+
+
+
+
+
+
   const handleSelect = (e: string) => {
     console.log("handleSelect e", e);
 
@@ -441,7 +453,7 @@ export default function Home() {
     console.log("button e", e);
 
     console.log("getNext,currStepIndex ", currStepIndex);
-    if (steps[getStepIndex("next")] === steps[steps.length -1]) {
+    if (steps[getStepIndex("next")] === steps[steps.length - 1]) {
       setText("最后一步");
     } else {
       setCurrStepIndex(currStepIndex + 1);
@@ -494,7 +506,11 @@ export default function Home() {
 
       <div>
         <p>筛选结果</p>
+        <div>
+
+        </div>
       </div>
+
       <footer className={styles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
