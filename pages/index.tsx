@@ -145,20 +145,25 @@ const limitingQs: string[] = [ONE_STRONG_LICENCES];
 function initLicences(allLicences: LicenceInfo): void {
   loadedLicenceData = allLicences.feed.entry;
   //console.log("allLicences", allLicences.feed.entry);
-  initScores(allLicences.feed.entry);
-  // console.log("loadedLicenceData", loadedLicenceData)
+  console.log("scores before", scores);
+   scores=   initScores(allLicences.feed.entry);
+  //console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
-   //console.log("scores", scores);
-  displayLicences();
+   console.log("scores", scores);
+  //displayLicences();
+  loadedLicenceData.forEach(calculateScoresForLicence);
 }
 
-function initScores(allApplicableLicences: Entry[]): void {
-  scores = allApplicableLicences.map(function (item) {
+function initScores(allApplicableLicences: Entry[]) {
+  const temp = allApplicableLicences.map(function (item) {
+    
     return {
       title: item.title,
       score: 100,
     };
   });
+  console.log("initScores, scores temp", temp)
+  return temp
 }
 
 function processChoice(formFieldId: string, fullChoice: string) {
@@ -181,7 +186,7 @@ function isLimitingQuestion(question: string) {
 function prepareLicencesList(fullChoice: string) {
   const choice: number | string = fullChoice.split("_")[1];
   //console.log("loadedLicenceData prepareLicencesList", loadedLicenceData);
-  //console.log("choice", choice);
+  console.log("prepareLicencesList choice", choice);
   if (Number(choice) !== 1) initScores(loadedLicenceData);
   // limit list of licences to those matching the req.
   else
@@ -251,8 +256,9 @@ function enabledSteps(index: number, enabled: boolean): void {
 
 function displayLicences() {
   loadedLicenceData.forEach(calculateScoresForLicence);
+  console.log("beforedisplayLicences scores ", scores);
   scores.sort(sortScores);
-  //console.log("displayLicences scores", scores);
+  console.log("displayLicences scores", scores);
 
   const score_list = {};
 
@@ -264,11 +270,13 @@ function displayLicences() {
     ).text;
 
   //console.log("displayLicences scores", scores);
-  //console.log("displayLicences score_list", score_list);
+  console.log("displayLicences score_list", score_list);
 }
 
 function calculateScoresForLicence(licenceData) {
-  //console.log("calculateScoresForLicence , licenceData", licenceData);
+  console.log("scores", scores);
+  console.log("calculateScoresForLicence , licenceData", licenceData);
+  
   let nrAnswers = 0,
     nrMatches = 0,
     score = -1;
@@ -294,14 +302,16 @@ function calculateScoresForLicence(licenceData) {
 
   if (nrAnswers > 0) score = nrMatches / nrAnswers;
 
-  //console.log("nrAnswers", nrAnswers, score, nrMatches);
-  scores.forEach(function (item) {
-    if (item.title === licenceData.title) item.score = score;
-  });
-  //console.log("scores", scores);
+  console.log("nrAnswers", nrAnswers, score, nrMatches);
+  console.log("calculateScoresForLicence scores", scores)
+  // scores.forEach(function (item) {
+  //   if (item.title === licenceData.title) item.score = 100;
+  // });
+  
 }
 
 function sortScores(a, b) {
+  console.log("sortScores",a,b)
   return a.score < b.score
     ? 1
     : a.score > b.score
@@ -396,9 +406,6 @@ export default function Home() {
   const now = 12;
 
   let choose: string | null = null;
-  // initLicences(allLicences);
-  // processChoice("q1", "q1strong_careless");
-  // processChoice("q2", "q2anocopyleft_0");
 
  
   function getStepIndex(direction: string) {
