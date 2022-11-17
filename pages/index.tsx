@@ -425,10 +425,6 @@ export default function Home() {
     return newStep;
   }
 
-  const switchStep = (stepIndex: number) => {
-    currStepIndex = stepIndex >= 0 ? stepIndex : currStepIndex;
-  };
-
   
   const handleSelect = (e: string) => {
     console.log("handleSelect e", e);
