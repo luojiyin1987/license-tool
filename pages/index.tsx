@@ -445,7 +445,7 @@ export default function Home() {
     console.log("button e", e);
 
     console.log("getNext,currStepIndex ", currStepIndex);
-    if (steps[getStepIndex("next")] === "q7") {
+    if (steps[getStepIndex("next")] === steps[steps.length -1]) {
       setText("最后一步");
     } else {
       setCurrStepIndex(currStepIndex + 1);
