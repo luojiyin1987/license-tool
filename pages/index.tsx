@@ -269,8 +269,8 @@ function displayLicences() {
       })
     ).text;
 
-  //console.log("displayLicences scores", scores);
-  console.log("displayLicences score_list", score_list);
+  console.log("displayLicences scores", scores);
+  //console.log("displayLicences score_list", score_list);
 }
 
 function calculateScoresForLicence(licenceData) {
@@ -304,9 +304,9 @@ function calculateScoresForLicence(licenceData) {
 
   console.log("nrAnswers", nrAnswers, score, nrMatches);
   console.log("calculateScoresForLicence scores", scores)
-  // scores.forEach(function (item) {
-  //   if (item.title === licenceData.title) item.score = 100;
-  // });
+  scores.forEach(function (item) {
+    if (item.title === licenceData.title) item.score = 100;
+  });
   
 }
 
