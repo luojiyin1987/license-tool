@@ -18,7 +18,7 @@ const optionValue = {
     q2c: [
       { value: "q2cmod_1", text: "模块级别" },
       { value: "q2cfile_1", text: "文件级别" },
-      { Value: "q2clib_1", text: "库接口级别" },
+      { value: "q2clib_1", text: "库接口级别" },
     ],
     q3: [
       { value: "q3juris_careless", text: "我不在乎——即使指定了境外地址" },
