@@ -142,16 +142,16 @@ const simpleYesNoQs: string[] = [
 
 const limitingQs: string[] = [ONE_STRONG_LICENCES];
 
-function initLicences(allLicences: LicenceInfo): void {
+function initLicences(scoresallLicences: LicenceInfo): void {
   loadedLicenceData = allLicences.feed.entry;
   //console.log("allLicences", allLicences.feed.entry);
   console.log("scores before", scores);
    scores=   initScores(allLicences.feed.entry);
   //console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
-   console.log("scores", scores);
-  //displayLicences();
-  loadedLicenceData.forEach(calculateScoresForLicence);
+   //console.log("scores", scores);
+  displayLicences();
+  //loadedLicenceData.forEach(calculateScoresForLicence);
 }
 
 function initScores(allApplicableLicences: Entry[]) {
@@ -168,7 +168,7 @@ function initScores(allApplicableLicences: Entry[]) {
 
 function processChoice(formFieldId: string, fullChoice: string) {
   choices[formFieldId] = fullChoice;
-  console.log("choices", choices[formFieldId]);
+  console.log("processChoice choices", choices[formFieldId]);
   //console.log("isLimitingQuestion(fullChoice)", isLimitingQuestion(fullChoice));
 
   //第一个问题选择 想过处理
@@ -176,10 +176,11 @@ function processChoice(formFieldId: string, fullChoice: string) {
 
   updateForm(fullChoice);
 
-  displayLicences();
+  //displayLicences();
 }
 
 function isLimitingQuestion(question: string) {
+  console.log("isLimitingQuestion question", question)
   return limitingQs.includes(question.split("_")[0]);
 }
 
@@ -240,8 +241,8 @@ function updateForm(fullChoice: string): void {
 function openBox(boxId: string): void {
   console.log("openBox boxId", boxId);
   enabledSteps(qs.indexOf(boxId) + 1, true);
-  console.log("               steps", steps);
-  console.log("openBox stepsEnabled", stepsEnabled);
+  // console.log("               steps", steps);
+  // console.log("openBox stepsEnabled", stepsEnabled);
 }
 
 function closeBox(boxId: string): void {
@@ -255,10 +256,12 @@ function enabledSteps(index: number, enabled: boolean): void {
 }
 
 function displayLicences() {
+
+  console.log("displayLicences scores orgin", scores);
   loadedLicenceData.forEach(calculateScoresForLicence);
   console.log("beforedisplayLicences scores ", scores);
   scores.sort(sortScores);
-  console.log("displayLicences scores", scores);
+  //console.log("displayLicences scores", scores);
 
   const score_list = {};
 
@@ -269,18 +272,24 @@ function displayLicences() {
       })
     ).text;
 
-  console.log("displayLicences scores", scores);
-  //console.log("displayLicences score_list", score_list);
+    console.log("displayLicences scores", scores);
+  // console.log("displayLicences score_list", score_list);
 }
 
-function calculateScoresForLicence(licenceData) {
-  console.log("scores", scores);
-  console.log("calculateScoresForLicence , licenceData", licenceData);
+function calculateScoresForLicence(licenceData) {  
+  if(Object.values(choices).every((value)=> value=== null)){
+    scores.forEach(function (item) {
+      if (item.title === licenceData.title) item.score = 100;
+    });
+    return
+  }
   
+
   let nrAnswers = 0,
     nrMatches = 0,
     score = -1;
-  //console.log("qs", qs, choices);
+  
+   
   qs.forEach(function (item) {
     //console.log("item", item);
     let fullChoice = choices[item];
@@ -300,18 +309,18 @@ function calculateScoresForLicence(licenceData) {
     }
   });
 
-  if (nrAnswers > 0) score = nrMatches / nrAnswers;
+  if (nrAnswers > 0) score = parseInt((nrMatches / nrAnswers) * 20) * 5;
 
-  console.log("nrAnswers", nrAnswers, score, nrMatches);
-  console.log("calculateScoresForLicence scores", scores)
+  // console.log("nrAnswers", nrAnswers, score, nrMatches);
+  // console.log("calculateScoresForLicence scores", scores)
   scores.forEach(function (item) {
-    if (item.title === licenceData.title) item.score = 100;
+    if (item.title === licenceData.title) item.score = score;
   });
   
 }
 
 function sortScores(a, b) {
-  console.log("sortScores",a,b)
+  
   return a.score < b.score
     ? 1
     : a.score > b.score
@@ -356,16 +365,18 @@ function calculateScore(licenceData) {
 }
 
 function calculateQuestion(fullChoice, licenceData, nrMatches) {
-  fullChoice = fullChoice.split("_");
-  //console.log("calculateQuestion fullChoice", fullChoice, licenceData);
-  if (simpleYesNoQs.includes(fullChoice[0]))
-    nrMatches += processSimpleYesNo(fullChoice[0], fullChoice[1], licenceData);
-  else if (isLimitingQuestion(fullChoice.join("_")))
-    nrMatches += processLimitingQuestion(fullChoice, licenceData);
-  else if (conditionsReuseQs.includes(fullChoice[0]))
+  const choiceInfo = fullChoice.split("_");
+  // console.log("calculateQuestion fullChoice", fullChoice, licenceData);
+  // console.log("calculateQuestion choiceInfo", choiceInfo);
+  // console.log("calculateQuestion fullChoice.join('_')",choiceInfo.join('_') )
+  if (simpleYesNoQs.includes(choiceInfo[0]))
+    nrMatches += processSimpleYesNo(choiceInfo[0], choiceInfo[1], licenceData);
+  else if (isLimitingQuestion(fullChoice))
+    nrMatches += processLimitingQuestion(choiceInfo, licenceData);
+  else if (conditionsReuseQs.includes(choiceInfo[0]))
     nrMatches += processConditionsOnReuseQuestion(
-      fullChoice[0],
-      fullChoice[1],
+      choiceInfo[0],
+      choiceInfo[1],
       licenceData
     );
 
@@ -377,8 +388,8 @@ function processSimpleYesNo(simpleQid, choice, licenceData): number {
     licenceYes = licenceData.content.includes(simpleQid);
 
   if (
-    (choice == 1 && licenceYes) ||
-    (choice == 0 && !licenceYes) ||
+    ( Number(choice) == 1 && licenceYes) ||
+    ( Number(choice) == 0 && !licenceYes) ||
     choice == DONT_CARE
   )
     newMatch++;
@@ -391,10 +402,10 @@ function processConditionsOnReuseQuestion(simpleQid, choice, licenceData) {
   let newMatch = 0,
     questionMatch = licenceData.content.includes(simpleQid);
 
-  if (choice == 1 && questionMatch) newMatch++;
+  if ( Number(choice) == 1 && questionMatch) newMatch++;
 
   // set q2b and q2c to 'not applicable'
-  if (simpleQid == TWO_NO_COPYLEFT && choice == 0 && !questionMatch) newMatch++;
+  if (simpleQid == TWO_NO_COPYLEFT && Number(choice) == 0 && !questionMatch) newMatch++;
   //console.log("processConditionsOnReuseQuestion newMatch", newMatch);
   return newMatch;
 }
@@ -403,7 +414,7 @@ export default function Home() {
   const [currStepIndex, setCurrStepIndex] = useState(0);
   const [Text, setText] = useState("下一步");
 
-  const now = 12;
+  const now = 15;
 
   let choose: string | null = null;
 
@@ -426,7 +437,7 @@ export default function Home() {
       console.log("Enabl", stepsEnabled);
       for (let i = 0; i < stepsEnabled.length; i++) {
         if (stepsEnabled[i]) {
-          console.log("i stepsEnabled[i] newStep", i, stepsEnabled[i], newStep);
+          //console.log("i stepsEnabled[i] newStep", i, stepsEnabled[i], newStep);
           if (newStep === currStepIndex) {
             console.log("getStepIndex newStep steps", newStep, steps[i]);
             return i;
@@ -452,6 +463,7 @@ export default function Home() {
     // console.log("nest",getStepIndex("next"))
     // console.log("steps[getStepIndex]",steps[getStepIndex("next")]);
     const choice = steps[getStepIndex("next")];
+    console.log("handleSelect choice,e", choice, e);
     processChoice(choice, e);
   };
 
@@ -461,10 +473,11 @@ export default function Home() {
 
     console.log("getNext,currStepIndex ", currStepIndex);
     if (steps[getStepIndex("next")] === steps[steps.length - 1]) {
-      setText("最后一步");
+      setText("结束");
     } else {
       setCurrStepIndex(currStepIndex + 1);
     }
+    displayLicences()
   };
 
   return (
