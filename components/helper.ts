@@ -58,7 +58,7 @@ const optionValue = {
     ],
   };
 
-  const licenceTips = {
+  const licenseTips = {
     q1: [
       {
         text: "您想将结果限定为开放源代码促进会（OSI）所描述的“流行并广泛使用，或拥有广泛社区群”的许可协议吗？",
@@ -168,4 +168,8 @@ const optionValue = {
     ],
   };
 
-  export   {optionValue, licenceTips}
+  const licenseKeyInfo = {
+
+  }
+
+  export   {optionValue, licenseTips,licenseKeyInfo}
