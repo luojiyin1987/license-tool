@@ -148,7 +148,7 @@ function initLicences(scoresallLicences: LicenceInfo): void {
   //console.log("allLicences", allLicences.feed.entry);
   console.log("scores before", scores);
    scores=   initScores(allLicences.feed.entry);
-   generateLicenseKeyInfo(loadedLicenceData);
+   genLicenseKeyInfo(loadedLicenceData);
   //console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
    //console.log("scores", scores);
@@ -168,15 +168,36 @@ function initScores(allApplicableLicences: Entry[]) {
   return temp
 }
 
-function generateLicenseKeyInfo(loadedLicenceData: Entry[]):void{
+function genLicenseKeyInfo(loadedLicenceData: Entry[]):void{
   const licenseKeyInfo = {}
   
   for( const licenseInfo of loadedLicenceData){
-      const temp = [];
+      const temp = {};
       console.log("generateLicenseKeyInfo licenseInfo", licenseInfo);
-
+      const licenseType= genLicenceType(licenseInfo)
+      console.log("genLicenseKeyInfo licenseType", licenseType)
   }
 
+}
+
+function genLicenceType(licenseInfo:Entry):string {
+  console.log("licenseInfo.q2anocopyleft", licenseInfo.q2anocopyleft)
+  if( licenseInfo.q2anocopyleft  ==1) {
+      return "Permissive"
+  }
+  else if (licenseInfo.q2bstrong == 1) {
+    return "Strong copyleft"
+  }
+  else if (licenseInfo.q2bweak == 1  && licenseInfo.q2cmod == 1 ) {
+    return "Weak copyleft - Module level"
+  }
+  else if(licenseInfo.q2bweak == 1 && licenseInfo.q2clib == 1) {
+    return "Weak copyleft - Library Interface Level"
+  }
+  else if(licenseInfo.q2bweak == 1 && licenseInfo.q2cfile ==1 ) {
+    return "Weak copyleft - File Level"
+  }
+  return "Copyleft"
 } 
 
 function processChoice(formFieldId: string, fullChoice: string) {
