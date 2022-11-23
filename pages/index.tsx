@@ -16,7 +16,7 @@ import {
 } from "react-bootstrap";
 
 import allLicences from "../components/matrix.json" assert { type: "json" };
-import { optionValue, licenceTips } from "../components/helper";
+import { optionValue, licenseTips } from "../components/helper";
 
 export interface LicenceInfo {
   feed: Feed;
@@ -488,7 +488,7 @@ export default function Home() {
       </p>
       <h4 className="warning black">切记：必须阅读并理解您选择的许可协议。</h4>
       <div>
-        {licenceTips[steps[getStepIndex("next")]].map((tip) => (
+        {licenseTips[steps[getStepIndex("next")]].map((tip) => (
           <p>{tip.text}</p>
         ))}
       </div>
