@@ -17,6 +17,7 @@ import {
 
 import allLicences from "../components/matrix.json" assert { type: "json" };
 import { optionValue, licenseTips } from "../components/helper";
+import { generateKey } from "crypto";
 
 export interface LicenceInfo {
   feed: Feed;
@@ -64,7 +65,7 @@ export interface Author {
   email: string;
 }
 
-let loadedLicenceData: {}[] = [];
+let loadedLicenceData:Entry[]  = [];
 let scores: {}[] = [];
 let loadedLimitedLicenceData: {}[] = [];
 
@@ -147,6 +148,7 @@ function initLicences(scoresallLicences: LicenceInfo): void {
   //console.log("allLicences", allLicences.feed.entry);
   console.log("scores before", scores);
    scores=   initScores(allLicences.feed.entry);
+   generateLicenseKeyInfo(loadedLicenceData);
   //console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
    //console.log("scores", scores);
@@ -165,6 +167,17 @@ function initScores(allApplicableLicences: Entry[]) {
   console.log("initScores, scores temp", temp)
   return temp
 }
+
+function generateLicenseKeyInfo(loadedLicenceData: Entry[]):void{
+  const licenseKeyInfo = {}
+  
+  for( const licenseInfo of loadedLicenceData){
+      const temp = [];
+      console.log("generateLicenseKeyInfo licenseInfo", licenseInfo);
+
+  }
+
+} 
 
 function processChoice(formFieldId: string, fullChoice: string) {
   choices[formFieldId] = fullChoice;
@@ -263,6 +276,8 @@ function displayLicences() {
   scores.sort(sortScores);
   //console.log("displayLicences scores", scores);
 
+
+
   const score_list = {};
 
   for (var i = 0; i < scores.length; i++)
@@ -273,7 +288,7 @@ function displayLicences() {
     ).text;
 
     console.log("displayLicences scores", scores);
-  // console.log("displayLicences score_list", score_list);
+   // console.log("displayLicences score_list", score_list);
 }
 
 function calculateScoresForLicence(licenceData) {  
