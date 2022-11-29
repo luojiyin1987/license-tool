@@ -65,8 +65,10 @@ export interface Author {
   email: string;
 }
 
+let scores: { "title":string, "score":number }[] = [];
+let licenseKeyInfo :{ [key: string]: {} } = {};
+
 let loadedLicenceData: Entry[] = [];
-let scores: {}[] = [];
 let loadedLimitedLicenceData: {}[] = [];
 
 const choices = {
@@ -143,12 +145,13 @@ const simpleYesNoQs: string[] = [
 
 const limitingQs: string[] = [ONE_STRONG_LICENCES];
 
+
 function initLicences(scoresallLicences: LicenceInfo): void {
   loadedLicenceData = allLicences.feed.entry;
   //console.log("allLicences", allLicences.feed.entry);
   console.log("scores before", scores);
   scores = initScores(allLicences.feed.entry);
-  genLicenseKeyInfo(loadedLicenceData);
+  licenseKeyInfo = genLicenseKeyInfo(loadedLicenceData);
   //console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
   //console.log("scores", scores);
@@ -167,7 +170,7 @@ function initScores(allApplicableLicences: Entry[]) {
   return temp;
 }
 
-function genLicenseKeyInfo(loadedLicenceData: Entry[]): void {
+function genLicenseKeyInfo(loadedLicenceData: Entry[]): { [key: string]: {} } {
   const licenseKeyInfo: { [key: string]: {} } = {};
 
   for (const licenseInfo of loadedLicenceData) {
@@ -187,6 +190,7 @@ function genLicenseKeyInfo(loadedLicenceData: Entry[]): void {
     licenseKeyInfo[licenseInfo.title] = temp;
   }
   console.log("genLicenseKeyInfo", licenseKeyInfo);
+  return licenseKeyInfo
 }
 
 function genLicenceType(licenseInfo: Entry): string {
@@ -243,14 +247,14 @@ function prepareLicencesList(fullChoice: string) {
   console.log("prepareLicencesList choice", choice);
   if (Number(choice) !== 1) initScores(loadedLicenceData);
   // limit list of licences to those matching the req.
-  else
-    initScores(
-      loadedLimitedLicenceData.length
-        ? loadedLimitedLicenceData
-        : loadedLicenceData.filter(function (item) {
-            return 1 == processLimitingQuestion(fullChoice, item);
-          })
-    );
+  // else
+  //   initScores(
+  //     loadedLimitedLicenceData.length
+  //       ? loadedLimitedLicenceData
+  //       : loadedLicenceData.filter(function (item) {
+  //           return 1 == processLimitingQuestion(fullChoice, item);
+  //         })
+  //   );
 }
 
 function processLimitingQuestion(fullChoice: string, licenceData): number {
