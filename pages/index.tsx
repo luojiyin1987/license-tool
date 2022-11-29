@@ -174,10 +174,20 @@ function genLicenseKeyInfo(loadedLicenceData: Entry[]):void{
   for( const licenseInfo of loadedLicenceData){
       const temp = {};
       console.log("generateLicenseKeyInfo licenseInfo", licenseInfo);
-      const licenseType= genLicenceType(licenseInfo)
-      console.log("genLicenseKeyInfo licenseType", licenseType)
-  }
+       genLicenceType(licenseInfo)
+      temp["type"] =  genLicenceType(licenseInfo)
+      temp["popular"] =  genYesOrNo(licenseInfo, "q1strong")
+      temp["jurisdiction"] = getJurisdiction(licenseInfo)
+      
+      temp["patentable"] =    genYesOrNo(licenseInfo, "q4apat")
+      temp["patentRetaliationClause"] =    genYesOrNo(licenseInfo, "q4bpatret")
+      temp["enhancedOwnership"] = genYesOrNo(licenseInfo, "q5enhattr")
+      temp["privacyLoophole"] = genYesOrNo(licenseInfo, "q6noloophole")
+      temp["noPromote"] = genYesOrNo(licenseInfo, "q7nopromo")
 
+      licenseKeyInfo[licenseInfo.title] = temp
+   }
+   console.log("genLicenseKeyInfo", licenseKeyInfo)
 }
 
 function genLicenceType(licenseInfo:Entry):string {
@@ -200,7 +210,7 @@ function genLicenceType(licenseInfo:Entry):string {
   return "Copyleft"
 }
 
-function getJurisdictional(licenseInfo:Entry):string {
+function getJurisdiction(licenseInfo:Entry):string {
   if (licenseInfo.q3juris == 1) {
     return licenseInfo.q3specjuris || 'careless'
   }
