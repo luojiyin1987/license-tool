@@ -198,7 +198,14 @@ function genLicenceType(licenseInfo:Entry):string {
     return "Weak copyleft - File Level"
   }
   return "Copyleft"
-} 
+}
+
+function getJurisdictional(licenseInfo:Entry):string {
+  if (licenseInfo.q3juris == 1) {
+    return licenseInfo.q3specjuris || 'careless'
+  }
+  return 'careless'
+}
 
 function processChoice(formFieldId: string, fullChoice: string) {
   choices[formFieldId] = fullChoice;
