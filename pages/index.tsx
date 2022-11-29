@@ -572,7 +572,12 @@ export default function Home() {
 
       <div>
         <p>筛选结果</p>
-        <div></div>
+        <div>
+          {scores.map((score)=> 
+            <p>{score.title} {score.score}</p>
+           
+          ) }
+        </div>
       </div>
 
       <footer className={styles.footer}>
