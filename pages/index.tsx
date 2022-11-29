@@ -207,6 +207,13 @@ function getJurisdictional(licenseInfo:Entry):string {
   return 'careless'
 }
 
+function genYesOrNo(licenseInfo:Entry, key: keyof Entry ):string {
+    if(licenseInfo[key] == 1)  {
+      return "Yes"
+    } 
+    return "No"
+} 
+
 function processChoice(formFieldId: string, fullChoice: string) {
   choices[formFieldId] = fullChoice;
   console.log("processChoice choices", choices[formFieldId]);
