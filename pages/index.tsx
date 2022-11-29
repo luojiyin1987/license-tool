@@ -65,7 +65,7 @@ export interface Author {
   email: string;
 }
 
-let loadedLicenceData:Entry[]  = [];
+let loadedLicenceData: Entry[] = [];
 let scores: {}[] = [];
 let loadedLimitedLicenceData: {}[] = [];
 
@@ -147,82 +147,77 @@ function initLicences(scoresallLicences: LicenceInfo): void {
   loadedLicenceData = allLicences.feed.entry;
   //console.log("allLicences", allLicences.feed.entry);
   console.log("scores before", scores);
-   scores=   initScores(allLicences.feed.entry);
-   genLicenseKeyInfo(loadedLicenceData);
+  scores = initScores(allLicences.feed.entry);
+  genLicenseKeyInfo(loadedLicenceData);
   //console.log("loadedLicenceData", loadedLicenceData)
   console.log("------------------");
-   //console.log("scores", scores);
+  //console.log("scores", scores);
   displayLicences();
   //loadedLicenceData.forEach(calculateScoresForLicence);
 }
 
 function initScores(allApplicableLicences: Entry[]) {
   const temp = allApplicableLicences.map(function (item) {
-    
     return {
       title: item.title,
       score: 100,
     };
   });
-  console.log("initScores, scores temp", temp)
-  return temp
+  console.log("initScores, scores temp", temp);
+  return temp;
 }
 
-function genLicenseKeyInfo(loadedLicenceData: Entry[]):void{
-  const licenseKeyInfo = {}
-  
-  for( const licenseInfo of loadedLicenceData){
-      const temp = {};
-      console.log("generateLicenseKeyInfo licenseInfo", licenseInfo);
-       genLicenceType(licenseInfo)
-      temp["type"] =  genLicenceType(licenseInfo)
-      temp["popular"] =  genYesOrNo(licenseInfo, "q1strong")
-      temp["jurisdiction"] = getJurisdiction(licenseInfo)
-      
-      temp["patentable"] =    genYesOrNo(licenseInfo, "q4apat")
-      temp["patentRetaliationClause"] =    genYesOrNo(licenseInfo, "q4bpatret")
-      temp["enhancedOwnership"] = genYesOrNo(licenseInfo, "q5enhattr")
-      temp["privacyLoophole"] = genYesOrNo(licenseInfo, "q6noloophole")
-      temp["noPromote"] = genYesOrNo(licenseInfo, "q7nopromo")
+function genLicenseKeyInfo(loadedLicenceData: Entry[]): void {
+  const licenseKeyInfo: { [key: string]: {} } = {};
 
-      licenseKeyInfo[licenseInfo.title] = temp
-   }
-   console.log("genLicenseKeyInfo", licenseKeyInfo)
+  for (const licenseInfo of loadedLicenceData) {
+    const temp: { [key: string]: string } = {};
+    console.log("generateLicenseKeyInfo licenseInfo", licenseInfo);
+    genLicenceType(licenseInfo);
+    temp["type"] = genLicenceType(licenseInfo);
+    temp["popular"] = genYesOrNo(licenseInfo, "q1strong");
+    temp["jurisdiction"] = getJurisdiction(licenseInfo);
+
+    temp["patentable"] = genYesOrNo(licenseInfo, "q4apat");
+    temp["patentRetaliationClause"] = genYesOrNo(licenseInfo, "q4bpatret");
+    temp["enhancedOwnership"] = genYesOrNo(licenseInfo, "q5enhattr");
+    temp["privacyLoophole"] = genYesOrNo(licenseInfo, "q6noloophole");
+    temp["noPromote"] = genYesOrNo(licenseInfo, "q7nopromo");
+
+    licenseKeyInfo[licenseInfo.title] = temp;
+  }
+  console.log("genLicenseKeyInfo", licenseKeyInfo);
 }
 
-function genLicenceType(licenseInfo:Entry):string {
-  console.log("licenseInfo.q2anocopyleft", licenseInfo.q2anocopyleft)
-  if( licenseInfo.q2anocopyleft  ==1) {
-      return "Permissive"
+function genLicenceType(licenseInfo: Entry): string {
+  console.log("licenseInfo.q2anocopyleft", licenseInfo.q2anocopyleft);
+  if (licenseInfo.q2anocopyleft == 1) {
+    return "Permissive";
+  } else if (licenseInfo.q2bstrong == 1) {
+    return "Strong copyleft";
+  } else if (licenseInfo.q2bweak == 1 && licenseInfo.q2cmod == 1) {
+    return "Weak copyleft - Module level";
+  } else if (licenseInfo.q2bweak == 1 && licenseInfo.q2clib == 1) {
+    return "Weak copyleft - Library Interface Level";
+  } else if (licenseInfo.q2bweak == 1 && licenseInfo.q2cfile == 1) {
+    return "Weak copyleft - File Level";
   }
-  else if (licenseInfo.q2bstrong == 1) {
-    return "Strong copyleft"
-  }
-  else if (licenseInfo.q2bweak == 1  && licenseInfo.q2cmod == 1 ) {
-    return "Weak copyleft - Module level"
-  }
-  else if(licenseInfo.q2bweak == 1 && licenseInfo.q2clib == 1) {
-    return "Weak copyleft - Library Interface Level"
-  }
-  else if(licenseInfo.q2bweak == 1 && licenseInfo.q2cfile ==1 ) {
-    return "Weak copyleft - File Level"
-  }
-  return "Copyleft"
+  return "Copyleft";
 }
 
-function getJurisdiction(licenseInfo:Entry):string {
+function getJurisdiction(licenseInfo: Entry): string {
   if (licenseInfo.q3juris == 1) {
-    return licenseInfo.q3specjuris || 'careless'
+    return licenseInfo.q3specjuris || "careless";
   }
-  return 'careless'
+  return "careless";
 }
 
-function genYesOrNo(licenseInfo:Entry, key: keyof Entry ):string {
-    if(licenseInfo[key] == 1)  {
-      return "Yes"
-    } 
-    return "No"
-} 
+function genYesOrNo(licenseInfo: Entry, key: keyof Entry): string {
+  if (licenseInfo[key] == 1) {
+    return "Yes";
+  }
+  return "No";
+}
 
 function processChoice(formFieldId: string, fullChoice: string) {
   choices[formFieldId] = fullChoice;
@@ -238,7 +233,7 @@ function processChoice(formFieldId: string, fullChoice: string) {
 }
 
 function isLimitingQuestion(question: string) {
-  console.log("isLimitingQuestion question", question)
+  console.log("isLimitingQuestion question", question);
   return limitingQs.includes(question.split("_")[0]);
 }
 
@@ -314,14 +309,11 @@ function enabledSteps(index: number, enabled: boolean): void {
 }
 
 function displayLicences() {
-
   console.log("displayLicences scores orgin", scores);
   loadedLicenceData.forEach(calculateScoresForLicence);
   console.log("beforedisplayLicences scores ", scores);
   scores.sort(sortScores);
   //console.log("displayLicences scores", scores);
-
-
 
   const score_list = {};
 
@@ -332,24 +324,22 @@ function displayLicences() {
       })
     ).text;
 
-    console.log("displayLicences scores", scores);
-   // console.log("displayLicences score_list", score_list);
+  console.log("displayLicences scores", scores);
+  // console.log("displayLicences score_list", score_list);
 }
 
-function calculateScoresForLicence(licenceData) {  
-  if(Object.values(choices).every((value)=> value=== null)){
+function calculateScoresForLicence(licenceData) {
+  if (Object.values(choices).every((value) => value === null)) {
     scores.forEach(function (item) {
       if (item.title === licenceData.title) item.score = 100;
     });
-    return
+    return;
   }
-  
 
   let nrAnswers = 0,
     nrMatches = 0,
     score = -1;
-  
-   
+
   qs.forEach(function (item) {
     //console.log("item", item);
     let fullChoice = choices[item];
@@ -376,11 +366,9 @@ function calculateScoresForLicence(licenceData) {
   scores.forEach(function (item) {
     if (item.title === licenceData.title) item.score = score;
   });
-  
 }
 
 function sortScores(a, b) {
-  
   return a.score < b.score
     ? 1
     : a.score > b.score
@@ -448,8 +436,8 @@ function processSimpleYesNo(simpleQid, choice, licenceData): number {
     licenceYes = licenceData.content.includes(simpleQid);
 
   if (
-    ( Number(choice) == 1 && licenceYes) ||
-    ( Number(choice) == 0 && !licenceYes) ||
+    (Number(choice) == 1 && licenceYes) ||
+    (Number(choice) == 0 && !licenceYes) ||
     choice == DONT_CARE
   )
     newMatch++;
@@ -462,10 +450,11 @@ function processConditionsOnReuseQuestion(simpleQid, choice, licenceData) {
   let newMatch = 0,
     questionMatch = licenceData.content.includes(simpleQid);
 
-  if ( Number(choice) == 1 && questionMatch) newMatch++;
+  if (Number(choice) == 1 && questionMatch) newMatch++;
 
   // set q2b and q2c to 'not applicable'
-  if (simpleQid == TWO_NO_COPYLEFT && Number(choice) == 0 && !questionMatch) newMatch++;
+  if (simpleQid == TWO_NO_COPYLEFT && Number(choice) == 0 && !questionMatch)
+    newMatch++;
   //console.log("processConditionsOnReuseQuestion newMatch", newMatch);
   return newMatch;
 }
@@ -478,7 +467,6 @@ export default function Home() {
 
   let choose: string | null = null;
 
- 
   function getStepIndex(direction: string) {
     let newStep: number | undefined = 0;
     console.log("getStepIndex currStepIndex", currStepIndex);
@@ -510,12 +498,6 @@ export default function Home() {
     return newStep;
   }
 
-
-
-
-
-
-
   const handleSelect = (e: string) => {
     console.log("handleSelect e", e);
 
@@ -537,7 +519,7 @@ export default function Home() {
     } else {
       setCurrStepIndex(currStepIndex + 1);
     }
-    displayLicences()
+    displayLicences();
   };
 
   return (
@@ -586,9 +568,7 @@ export default function Home() {
 
       <div>
         <p>筛选结果</p>
-        <div>
-
-        </div>
+        <div></div>
       </div>
 
       <footer className={styles.footer}>
