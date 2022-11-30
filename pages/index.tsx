@@ -66,7 +66,8 @@ export interface Author {
 }
 
 let scores: { "title":string, "score":number }[] = [];
-let licenseKeyInfo :{ [key: string]: {} } = {};
+type keyInfo = {}
+let licenseKeyInfo :{  [key: string] :{[key: string]: string}} = {};
 
 let loadedLicenceData: Entry[] = [];
 let loadedLimitedLicenceData: {}[] = [];
@@ -577,6 +578,9 @@ export default function Home() {
           <><div>
             <span>{score.title} </span>
             <span>{score.score} </span>
+            </div>
+            <div hidden>
+              <p>{licenseKeyInfo[score.title].type}</p>
             </div>
         </>
           )}
