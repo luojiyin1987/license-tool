@@ -574,8 +574,11 @@ export default function Home() {
         <p>筛选结果</p>
         <div>
           {scores.map((score)=> 
+          <><div>
             <span>{score.title} </span>
             <span>{score.score} </span>
+            </div>
+        </>
           )}
         </div>
       </div>
