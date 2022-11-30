@@ -66,7 +66,6 @@ export interface Author {
 }
 
 let scores: { "title":string, "score":number }[] = [];
-type keyInfo = {}
 let licenseKeyInfo :{  [key: string] :{[key: string]: string}} = {};
 
 let loadedLicenceData: Entry[] = [];
