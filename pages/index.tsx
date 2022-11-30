@@ -342,7 +342,7 @@ function calculateScoresForLicence(licenceData) {
 
   let nrAnswers = 0,
     nrMatches = 0,
-    score = -1;
+    score = 100;
 
   qs.forEach(function (item) {
     //console.log("item", item);
@@ -574,9 +574,9 @@ export default function Home() {
         <p>筛选结果</p>
         <div>
           {scores.map((score)=> 
-            <p>{score.title} {score.score}</p>
-           
-          ) }
+            <span>{score.title} </span>
+            <span>{score.score} </span>
+          )}
         </div>
       </div>
 
