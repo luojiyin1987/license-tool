@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import styles from "../styles/Home.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import source from "../styles/Source.module.css"
 
 import {
   Container,
@@ -574,7 +575,7 @@ export default function Home() {
         <p>筛选结果</p>
         <div>
           {scores.map((score)=> 
-          <><div>
+          <><div className="title">
             <span>{score.title} </span>
             <span>{score.score} </span>
             </div>
