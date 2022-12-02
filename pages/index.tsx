@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import styles from "../styles/Home.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import source from "../styles/Source.module.css"
+import source from "../styles/Source.module.css";
 
 import {
   Container,
@@ -66,8 +66,8 @@ export interface Author {
   email: string;
 }
 
-let scores: { "title":string, "score":number }[] = [];
-let licenseKeyInfo :{  [key: string] :{[key: string]: string}} = {};
+let scores: { title: string; score: number }[] = [];
+let licenseKeyInfo: { [key: string]: { [key: string]: string } } = {};
 
 let loadedLicenceData: Entry[] = [];
 let loadedLimitedLicenceData: {}[] = [];
@@ -146,7 +146,6 @@ const simpleYesNoQs: string[] = [
 
 const limitingQs: string[] = [ONE_STRONG_LICENCES];
 
-
 function initLicences(scoresallLicences: LicenceInfo): void {
   loadedLicenceData = allLicences.feed.entry;
   //console.log("allLicences", allLicences.feed.entry);
@@ -191,7 +190,7 @@ function genLicenseKeyInfo(loadedLicenceData: Entry[]): { [key: string]: {} } {
     licenseKeyInfo[licenseInfo.title] = temp;
   }
   console.log("genLicenseKeyInfo", licenseKeyInfo);
-  return licenseKeyInfo
+  return licenseKeyInfo;
 }
 
 function genLicenceType(licenseInfo: Entry): string {
@@ -571,19 +570,31 @@ export default function Home() {
         </Button>{" "}
       </div>
 
-      <div>
+      <div className={source["screening-results"]}>
         <p>筛选结果</p>
-        <div>
-          {scores.map((score)=> 
-          <><div className="title">
-            <span>{score.title} </span>
-            <span>{score.score} </span>
+        <div id={source["screening-results-inner"]}>
+          {scores.map((score) => (
+            <div className={`${source["result"]} ${source["folding"]}`}>
+              <div className={source["portlet-header"]}>
+                <div className="title">
+                  <span>{score.title} </span>
+                  <span>{score.score} </span>
+                </div>
+              </div>
+              <div >
+                <ul>
+                <li>许可协议类型: {licenseKeyInfo[score.title].type}</li>
+                <li>流行并广泛使用: {licenseKeyInfo[score.title].popular}</li>
+                <li>司法管辖区: {licenseKeyInfo[score.title].jurisdiction}</li>
+                <li>授予专利权: {licenseKeyInfo[score.title].patentable}</li>
+                <li>专利报复条款: {licenseKeyInfo[score.title].patentRetaliationClause}</li>
+                <li>指定“增强型归属”: {licenseKeyInfo[score.title].enhancedOwnership}</li>
+                <li>解决“隐私漏洞”:  {licenseKeyInfo[score.title].privacyLoophole}</li>
+                <li>指定“不推广”功能: {licenseKeyInfo[score.title].noPromote}</li>
+                </ul>
+              </div>
             </div>
-            <div hidden>
-              <p>{licenseKeyInfo[score.title].type}</p>
-            </div>
-        </>
-          )}
+          ))}
         </div>
       </div>
 
