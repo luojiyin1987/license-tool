@@ -85,6 +85,23 @@ const choices = {
   q7: null,
 };
 
+const choices1:{[key: string]: string| number} = {
+  q1strong: "",
+  q2anocopyleft: "",
+  q2bweak: "",
+  q2bstrong: "",
+  q2cmod: "",
+  q2clib: "",
+  q2cfile: "",
+  q3juris: "",
+  q3specjuris: "",
+  q4apat: "",
+  q4bpatret: "",
+  q5enhattr: "",
+  q6noloophole: "",
+  q7nopromo: "",
+};
+
 const DONT_CARE: string = "careless";
 const qs: string[] = [
   "q2a",
@@ -235,6 +252,8 @@ function processChoice(formFieldId: string, fullChoice: string) {
 
   //displayLicences();
 }
+
+function processChoice1()
 
 function isLimitingQuestion(question: string) {
   console.log("isLimitingQuestion question", question);
@@ -581,16 +600,29 @@ export default function Home() {
                   <span>{score.score} </span>
                 </div>
               </div>
-              <div >
+              <div>
                 <ul>
-                <li>许可协议类型: {licenseKeyInfo[score.title].type}</li>
-                <li>流行并广泛使用: {licenseKeyInfo[score.title].popular}</li>
-                <li>司法管辖区: {licenseKeyInfo[score.title].jurisdiction}</li>
-                <li>授予专利权: {licenseKeyInfo[score.title].patentable}</li>
-                <li>专利报复条款: {licenseKeyInfo[score.title].patentRetaliationClause}</li>
-                <li>指定“增强型归属”: {licenseKeyInfo[score.title].enhancedOwnership}</li>
-                <li>解决“隐私漏洞”:  {licenseKeyInfo[score.title].privacyLoophole}</li>
-                <li>指定“不推广”功能: {licenseKeyInfo[score.title].noPromote}</li>
+                  <li>许可协议类型: {licenseKeyInfo[score.title].type}</li>
+                  <li>流行并广泛使用: {licenseKeyInfo[score.title].popular}</li>
+                  <li>
+                    司法管辖区: {licenseKeyInfo[score.title].jurisdiction}
+                  </li>
+                  <li>授予专利权: {licenseKeyInfo[score.title].patentable}</li>
+                  <li>
+                    专利报复条款:{" "}
+                    {licenseKeyInfo[score.title].patentRetaliationClause}
+                  </li>
+                  <li>
+                    指定“增强型归属”:{" "}
+                    {licenseKeyInfo[score.title].enhancedOwnership}
+                  </li>
+                  <li>
+                    解决“隐私漏洞”:{" "}
+                    {licenseKeyInfo[score.title].privacyLoophole}
+                  </li>
+                  <li>
+                    指定“不推广”功能: {licenseKeyInfo[score.title].noPromote}
+                  </li>
                 </ul>
               </div>
             </div>
