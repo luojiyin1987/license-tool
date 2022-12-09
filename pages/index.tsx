@@ -328,18 +328,18 @@ function updateForm(fullChoice: string): void {
 
   if (choiceInfo[0] == TWO_NO_COPYLEFT) {
     if (Number(choiceInfo[1]) === 0) {
-      openBox("q2b");
-      closeBox("q2c");
+      openChoice("q2b");
+      closeChoice("q2c");
     } else {
-      closeBox("q2b");
-      closeBox("q2c");
+      closeChoice("q2b");
+      closeChoice("q2c");
     }
-  } else if (choiceInfo[0] == "q2bstrong") closeBox("q2c");
-  else if (choiceInfo[0] == "q2bweak") openBox("q2c");
+  } else if (choiceInfo[0] == "q2bstrong") closeChoice("q2c");
+  else if (choiceInfo[0] == "q2bweak") openChoice("q2c");
   else if (choiceInfo[0] == "q4apat")
     if (choiceInfo[1] == "careless" || Number(fullChoice[1]) === 1)
-      openBox("q4b");
-    else closeBox("q4b");
+    openChoice("q4b");
+    else closeChoice("q4b");
 
   console.log("updateForm, qs choices", choices);
 }
