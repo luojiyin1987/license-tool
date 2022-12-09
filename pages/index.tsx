@@ -85,6 +85,23 @@ const choices = {
   q7: null,
 };
 
+const choices1: { [key: string]: string | number } = {
+  q1strong: "",
+  q2anocopyleft: "",
+  q2bweak: "",
+  q2bstrong: "",
+  q2cmod: "",
+  q2clib: "",
+  q2cfile: "",
+  q3juris: "",
+  q3specjuris: "",
+  q4apat: "",
+  q4bpatret: "",
+  q5enhattr: "",
+  q6noloophole: "",
+  q7nopromo: "",
+};
+
 const DONT_CARE: string = "careless";
 const qs: string[] = [
   "q2a",
@@ -236,6 +253,38 @@ function processChoice(formFieldId: string, fullChoice: string) {
   //displayLicences();
 }
 
+function processChoice1(choiceId: string, value: string | number) {
+  choices1[choiceId] = value;
+  updateChoice(choiceId, value);
+}
+
+function updateChoice(choiceId: string, value: string | number): void {
+  if (choiceId === TWO_NO_COPYLEFT && value === 0) {
+    openChoice("q2b");
+    closeChoice("q2c");
+  } else if (choiceId === TWO_NO_COPYLEFT && value !== 0) {
+    closeChoice("q2b");
+    closeChoice("q2c");
+  } else if (choiceId === TWO_STRONG_COPYLEFT) {
+    closeChoice("q2c");
+  } else if (choiceId === FOUR_GRANT_PATENTS) {
+    if (value === DONT_CARE || value === 1) {
+      openChoice("q4b");
+    } else {
+      closeChoice("q4b");
+    }
+  }
+}
+
+function openChoice(id: string): void {
+  stepsEnabled[qs.indexOf(id)+1] =true
+}
+function closeChoice(id: string): void {
+    stepsEnabled[qs.indexOf(id)+1] = false
+}
+
+
+
 function isLimitingQuestion(question: string) {
   console.log("isLimitingQuestion question", question);
   return limitingQs.includes(question.split("_")[0]);
@@ -279,18 +328,18 @@ function updateForm(fullChoice: string): void {
 
   if (choiceInfo[0] == TWO_NO_COPYLEFT) {
     if (Number(choiceInfo[1]) === 0) {
-      openBox("q2b");
-      closeBox("q2c");
+      openChoice("q2b");
+      closeChoice("q2c");
     } else {
-      closeBox("q2b");
-      closeBox("q2c");
+      closeChoice("q2b");
+      closeChoice("q2c");
     }
-  } else if (choiceInfo[0] == "q2bstrong") closeBox("q2c");
-  else if (choiceInfo[0] == "q2bweak") openBox("q2c");
+  } else if (choiceInfo[0] == "q2bstrong") closeChoice("q2c");
+  else if (choiceInfo[0] == "q2bweak") openChoice("q2c");
   else if (choiceInfo[0] == "q4apat")
     if (choiceInfo[1] == "careless" || Number(fullChoice[1]) === 1)
-      openBox("q4b");
-    else closeBox("q4b");
+    openChoice("q4b");
+    else closeChoice("q4b");
 
   console.log("updateForm, qs choices", choices);
 }
@@ -581,16 +630,29 @@ export default function Home() {
                   <span>{score.score} </span>
                 </div>
               </div>
-              <div >
+              <div>
                 <ul>
-                <li>许可协议类型: {licenseKeyInfo[score.title].type}</li>
-                <li>流行并广泛使用: {licenseKeyInfo[score.title].popular}</li>
-                <li>司法管辖区: {licenseKeyInfo[score.title].jurisdiction}</li>
-                <li>授予专利权: {licenseKeyInfo[score.title].patentable}</li>
-                <li>专利报复条款: {licenseKeyInfo[score.title].patentRetaliationClause}</li>
-                <li>指定“增强型归属”: {licenseKeyInfo[score.title].enhancedOwnership}</li>
-                <li>解决“隐私漏洞”:  {licenseKeyInfo[score.title].privacyLoophole}</li>
-                <li>指定“不推广”功能: {licenseKeyInfo[score.title].noPromote}</li>
+                  <li>许可协议类型: {licenseKeyInfo[score.title].type}</li>
+                  <li>流行并广泛使用: {licenseKeyInfo[score.title].popular}</li>
+                  <li>
+                    司法管辖区: {licenseKeyInfo[score.title].jurisdiction}
+                  </li>
+                  <li>授予专利权: {licenseKeyInfo[score.title].patentable}</li>
+                  <li>
+                    专利报复条款:{" "}
+                    {licenseKeyInfo[score.title].patentRetaliationClause}
+                  </li>
+                  <li>
+                    指定“增强型归属”:{" "}
+                    {licenseKeyInfo[score.title].enhancedOwnership}
+                  </li>
+                  <li>
+                    解决“隐私漏洞”:{" "}
+                    {licenseKeyInfo[score.title].privacyLoophole}
+                  </li>
+                  <li>
+                    指定“不推广”功能: {licenseKeyInfo[score.title].noPromote}
+                  </li>
                 </ul>
               </div>
             </div>
