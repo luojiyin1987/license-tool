@@ -276,8 +276,14 @@ function updateChoice(choiceId: string, value: string | number): void {
   }
 }
 
-function openChoice(id: string): void {}
-function closeChoice(id: string): void {}
+function openChoice(id: string): void {
+  stepsEnabled[qs.indexOf(id)+1] =true
+}
+function closeChoice(id: string): void {
+    stepsEnabled[qs.indexOf(id)+1] = false
+}
+
+
 
 function isLimitingQuestion(question: string) {
   console.log("isLimitingQuestion question", question);
