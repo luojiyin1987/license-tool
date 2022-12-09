@@ -85,7 +85,7 @@ const choices = {
   q7: null,
 };
 
-const choices1:{[key: string]: string| number} = {
+const choices1: { [key: string]: string | number } = {
   q1strong: "",
   q2anocopyleft: "",
   q2bweak: "",
@@ -253,7 +253,31 @@ function processChoice(formFieldId: string, fullChoice: string) {
   //displayLicences();
 }
 
-function processChoice1()
+function processChoice1(choiceId: string, value: string | number) {
+  choices1[choiceId] = value;
+  updateChoice(choiceId, value);
+}
+
+function updateChoice(choiceId: string, value: string | number): void {
+  if (choiceId === TWO_NO_COPYLEFT && value === 0) {
+    openChoice("q2b");
+    closeChoice("q2c");
+  } else if (choiceId === TWO_NO_COPYLEFT && value !== 0) {
+    closeChoice("q2b");
+    closeChoice("q2c");
+  } else if (choiceId === TWO_STRONG_COPYLEFT) {
+    closeChoice("q2c");
+  } else if (choiceId === FOUR_GRANT_PATENTS) {
+    if (value === DONT_CARE || value === 1) {
+      openChoice("q4b");
+    } else {
+      closeChoice("q4b");
+    }
+  }
+}
+
+function openChoice(id: string): void {}
+function closeChoice(id: string): void {}
 
 function isLimitingQuestion(question: string) {
   console.log("isLimitingQuestion question", question);
